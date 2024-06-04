@@ -38,3 +38,38 @@ async function fetchProdutos() {
 
 // Chama a função fetchProdutos quando a página carregar
 document.addEventListener('DOMContentLoaded', fetchProdutos);*/
+
+async function fetchProdutos() {
+    try {
+        const response = await fetch('/produtos');
+        if (!response.ok) {
+            throw new Error('Erro ao buscar os produtos');
+        }
+        const produtos = await response.json();
+        displayProdutos(produtos);
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
+
+function displayProdutos(produtos) {
+    const container = document.querySelector('.content-produto-etiqueta');
+    container.innerHTML = ''; // Limpa o conteúdo existente
+    produtos.forEach(produto => {
+        const produtoDiv = document.createElement('div');
+        produtoDiv.innerHTML = `
+            <p>Código: ${produto.codigoProduto}</p>
+            <p>Descrição: ${produto.descricaoProduto}</p>
+            <p>Preço: ${produto.precoProduto}</p>
+            <p>Unidade: ${produto.unidadeProduto}</p>
+        `;
+        container.appendChild(produtoDiv);
+    });
+}
+
+function printEtiqueta() {
+    window.print();
+}
+
+// Chama a função para buscar e exibir os produtos quando a página é carregada
+document.addEventListener('DOMContentLoaded', fetchProdutos);

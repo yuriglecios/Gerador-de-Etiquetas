@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <title>Gerar Código de Barras</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<main>
+    <section class="section-principal">
+        <div class="principal-produto">
+            <h1>Imprimir produtos</h1>
+            <button onclick="fetchProdutos()">Buscar Produtos</button>
+            <button onclick="printEtiqueta()">Imprimir etiqueta</button>
+            <div id="conteiner-produtos">
+                <div class="content-produto-etiqueta">
+                    <!-- Conteúdo da etiqueta a ser impresso -->
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script>
+    async function fetchProdutos() {
+        try {
+            const response = await fetch('/produtos');
+            if (!response.ok) {
+                throw new Error('Erro ao buscar os produtos');
+            }
+            const produtos = await response.json();
+            displayProdutos(produtos);
+        } catch (error) {
+            console.error('Erro:', error);
+        }
+    }
+
+    function displayProdutos(produtos) {
+        const container = document.querySelector('.content-produto-etiqueta');
+        container.innerHTML = ''; // Limpa o conteúdo existente
+        produtos.forEach(produto => {
+            const produtoDiv = document.createElement('div');
+            produtoDiv.classList.add('produto-div');
+            produtoDiv.innerHTML = `
+            <p class="descricao">${produto.descricaoProduto}</p>
+            <p class="unidade">${produto.unidadeProduto}</p>
+            <svg id="barcode-${produto.codigoProduto}"></svg>
+            <p class="codigo">${produto.codigoProduto}</p>
+            <p class="preco">R$ ${produto.precoProduto}</p>
+        `;
+            container.appendChild(produtoDiv);
+            JsBarcode(`#barcode-${produto.codigoProduto}`, produto.codigoProduto, {
+                format: "CODE128",
+                displayValue: true,
+                height: 30,
+                width: 2
+            });
+        });
+    }
+
+    function printEtiqueta() {
+        window.print();
+    }
+</script>
+</body>
+</html>
