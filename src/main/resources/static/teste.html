@@ -1,67 +1,258 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Oxygen:wght@300;400;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link href="style.css" rel="stylesheet">
-    <title>Gerar Código de Barras</title>
+    <title>Etiqueta</title>
     <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.0/dist/JsBarcode.all.min.js"></script>
 </head>
+
 <body>
-<main>
-    <section class="section-principal">
-        <div class="principal-produto">
-            <h1>Imprimir produtos</h1>
-            <button onclick="fetchProdutos()">Buscar Produtos</button>
-            <button onclick="printEtiqueta()">Imprimir etiqueta</button>
-            <div id="conteiner-produtos">
-                <div class="content-produto-etiqueta">
-                    <!-- Conteúdo da etiqueta a ser impresso -->
+    <header class="header-menu">
+        <div class="content-text">
+            <span>Impressão Etiquetas Produtos</span>
+        </div>
+    </header>
+    <main>
+        <section class="section-principal">
+            <div class="container-all-products-add-products">
+                <div class="all-products">
+                    <h2>Produtos</h2>
+                    <div class="container-content">
+                        <div class="container-get-btn-all-get-btn">
+                            <label for="select-product">Buscar por:</label>
+                            <select id="select-product" name="select-product">
+                                <option value="get-all-products;"></option>
+                                <option value="get-all-products;">Todos os Produtos</option>
+                                <option value="codigo-produto;">Código</option>
+                            </select>
+                            <div class="button-section-options-products">
+                                <button id="btn-products">Buscar</button>
+                            </div>
+                            <div class="button-filter-client-code">
+                                <input type="number" id="input-filter-client" placeholder="Digite o code do produto">
+                                <span onclick="searchNumber()" class="material-symbols-outlined">
+                                    search
+                                </span>
+                            </div>
+                        </div>
+                        <div class="container-generate-check-box-all">
+                            <div class="button-generate">
+                                <button id="btn-products">Gerar etiqueta</button>
+                            </div>
+                            <div class="content-check-box-all">
+                                <input id="btn-products" type="checkbox">Selecionar todos</button>
+                            </div>
+
+                        </div>
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                              
+                            </div>
+                        </div>
+                        <div id="myModal" class="modal">
+                            <div class="modal-content">
+                                <span class="close">&times;</span>
+                               
+                            </div>
+                        </div>
+                        <div class="all-table">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Código Produto</th>
+                                        <th>Descrição</th>
+                                        <th>Preço</th>
+                                        <th>Unidade</th>
+                                        <th><span class="material-symbols-outlined">
+                                            label
+                                            </span></th>
+                                        <th><span class="material-symbols-outlined">
+                                            check_box
+                                            </span></span></th>
+                                    </tr>
+                                <tbody id="tbody-products-all">
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>233232</td>
+                                        <td>Telefone</td>
+                                        <td>R$ 3.456,00</td>
+                                        <td>43</td>
+                                        <td><span id="view" class="material-symbols-outlined">
+                                            visibility
+                                            </span></td>
+                                        <td><input type="checkbox"></td>
+                                    </tr>
+                                  
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-</main>
-<script>
-    async function fetchProdutos() {
-        try {
-            const response = await fetch('/produtos');
-            if (!response.ok) {
-                throw new Error('Erro ao buscar os produtos');
-            }
-            const produtos = await response.json();
-            displayProdutos(produtos);
-        } catch (error) {
-            console.error('Erro:', error);
-        }
-    }
-
-    function displayProdutos(produtos) {
-        const container = document.querySelector('.content-produto-etiqueta');
-        container.innerHTML = ''; // Limpa o conteúdo existente
-        produtos.forEach(produto => {
-            const produtoDiv = document.createElement('div');
-            produtoDiv.classList.add('produto-div');
-            produtoDiv.innerHTML = `
-            <p class="descricao">${produto.descricaoProduto}</p>
-            <p class="unidade">${produto.unidadeProduto}</p>
-            <svg id="barcode-${produto.codigoProduto}"></svg>
-            <p class="codigo">${produto.codigoProduto}</p>
-            <p class="preco">R$ ${produto.precoProduto}</p>
-        `;
-            container.appendChild(produtoDiv);
-            JsBarcode(`#barcode-${produto.codigoProduto}`, produto.codigoProduto, {
-                format: "CODE128",
-                displayValue: true,
-                height: 30,
-                width: 2
-            });
-        });
-    }
-
-    function printEtiqueta() {
-        window.print();
-    }
-</script>
+        </section>
+    </main>
+    <script src="./script.js"></script>
 </body>
+
 </html>

@@ -6,70 +6,124 @@
     displayValue: true
 });*/
 
+const selectProductActiveBtnGet = document.querySelector("#select-product");
+const tbodyAllproducts = document.querySelector("#tbody-products-all");
+const productsAllbtn = document.querySelector("#btn-products");
+var modal = document.getElementById("myModal");
+var btnViewIcon = document.querySelector("#view");
+var span = document.getElementsByClassName("close")[0];
 
-/*const apiURL = 'http://localhost:8080/produtos';
 
-// Função para buscar e exibir os produtos
-async function fetchProdutos() {
-    try {
-        const response = await fetch(apiURL);
+const urlProduct = "http://localhost:8080";
 
-        if (!response.ok) {
-            throw new Error('Erro ao buscar produtos');
-        }
 
-        const produtos = await response.json();
-
-        // Seleciona o elemento UL para listar os produtos
-        const produtosLista = document.getElementById('produtos-lista');
-        produtosLista.innerHTML = '';
-
-        // Itera sobre os produtos e cria um item de lista para cada um
-        produtos.forEach(produto => {
-            const li = document.createElement('li');
-            const svgQrcodeProduto = document.createElement('svg');   //<svg id="barcode"></svg>
-            li.textContent = `ID: ${produto.id} - Nome: ${produto.nome} - Preço: ${produto.preco}`;
-            produtosLista.appendChild(li);
-        });
-    } catch (error) {
-        console.error('Erro:', error);
-    }
-}
-
-// Chama a função fetchProdutos quando a página carregar
-document.addEventListener('DOMContentLoaded', fetchProdutos);*/
-
-async function fetchProdutos() {
-    try {
-        const response = await fetch('/produtos');
-        if (!response.ok) {
-            throw new Error('Erro ao buscar os produtos');
-        }
-        const produtos = await response.json();
-        displayProdutos(produtos);
-    } catch (error) {
-        console.error('Erro:', error);
-    }
-}
-
-function displayProdutos(produtos) {
-    const container = document.querySelector('.content-produto-etiqueta');
-    container.innerHTML = ''; // Limpa o conteúdo existente
-    produtos.forEach(produto => {
-        const produtoDiv = document.createElement('div');
-        produtoDiv.innerHTML = `
-            <p>Código: ${produto.codigoProduto}</p>
-            <p>Descrição: ${produto.descricaoProduto}</p>
-            <p>Preço: ${produto.precoProduto}</p>
-            <p>Unidade: ${produto.unidadeProduto}</p>
-        `;
-        container.appendChild(produtoDiv);
+const getAllproducts = async () => {
+  try {
+    const response = await fetch(urlProduct + "/produtos", {
+      method: "GET",
     });
-}
+    if (!response.ok) {
+      throw new Error(`Erro HTTP! Status: ${response.status}`);
+    }
+    const products = await response.json();
+    console.log(products);
+    return products;
+  } catch (error) {
+    console.error("Erro ao buscar produtos:", error);
+    return null;
+  }
+};
 
-function printEtiqueta() {
-    window.print();
-}
+async function getProduct(idProduct) {
+  try {
+    const response = await fetch(`${urlProduct}/${idProduct}`, {
+      method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('Erro ao buscar produto');
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('Erro:', error);
+    throw error;
+  }
+};
 
-// Chama a função para buscar e exibir os produtos quando a página é carregada
-document.addEventListener('DOMContentLoaded', fetchProdutos);
+
+const allproducts = async () => {
+  const allproducts = await getAllproducts();
+  console.log(allproducts);
+
+  tbodyAllproducts.innerHTML = "";
+  if (allproducts != null) {
+    for (i = 0; i < allproducts.length; i++) {
+      const client = allproducts[i];
+      const tr = document.createElement("tr");
+      const trContent = `
+     <td>${client.codeClient}</td>
+     <td>${client.name}</td>
+     <td>${client.cpf}</td>
+     <td>${client.age}</td>
+     <td><span onclick="editClient(event)" id="${client.codeClient}" class="material-symbols-outlined btn-edit-client">
+        edit</span></td>
+        <td><span onclick="deleteClient(event)" id="${client.codeClient}" class="material-symbols-outlined btn-delete-client">
+        delete</span></td>
+        `;
+      tr.innerHTML = trContent;
+      tbodyAllproducts.appendChild(tr);
+    }
+    editBtn = document.querySelector(".btn-edit-client");
+    deleteBtn = document.querySelector(".btn-delete-client");
+    editBtn.addEventListener("click", editClient);
+    deleteBtn.addEventListener("click", deleteClient);
+  }
+};
+
+productsAllbtn.addEventListener("click", allproducts);
+
+
+const searchNumber = async () => {
+  const input = document.getElementById("input-filter-client");
+  const id = input.value;
+  try {
+    const client = await getProduct(id);
+    if (client != null) {
+      tbodyAllproducts.innerHTML = "";
+      const tr = document.createElement("tr");
+      const trContent = `
+        <td>${client.codeClient}</td>
+        <td>${client.name}</td>
+        <td>${client.cpf}</td>
+        <td>${client.age}</td>
+        <td><span onclick="editClient(event)" id="${client.codeClient}" class="material-symbols-outlined btn-edit-client">
+        edit</span></td>
+        <td><span onclick="deleteClient(event)" id="${client.codeClient}" class="material-symbols-outlined btn-delete-client">
+        delete</span></td>
+      `;
+      tr.innerHTML = trContent;
+      tbodyAllproducts.appendChild(tr);
+    }
+    editBtn = document.querySelector(".btn-edit-client");
+    deleteBtn = document.querySelector(".btn-delete-client");
+    btnDeleteConfirm.addEventListener("click", confirmDelete);
+  } catch (error) {
+    console.error("Erro ao buscar produto:", error);
+  }
+};
+
+
+btnViewIcon.onclick = function () {
+  modal.style.display = "block";
+};
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
+
